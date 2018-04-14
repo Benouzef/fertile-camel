@@ -38,6 +38,39 @@ app.route('/')
 		  res.sendFile(process.cwd() + '/views/index.html');
     })
 
+app.route('/:time')
+    .get(function(req, res) {
+		  res.json(getTimestampJSON(req.params.time));
+})
+
+function getTimestampJSON(timestamp) {
+  var result = {
+		unix: null,
+		natural: null
+	};
+  
+  var date;
+	if (!isNaN(parseInt(timestamp))) {
+		date = new Date(parseInt(timestamp));
+	} else {
+		date = new Date(timestamp);
+	}
+  console.log(date);
+  
+  if (!isNaN(date.getTime())) {
+		result.unix = date.getTime();
+		result.natural = getNaturalDate(date);
+	}
+  
+  return result;
+}
+
+function getNaturalDate(date) {
+	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Obtober', 'November', 'December'];
+ 
+	return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+}
+
 // Respond not found to all the wrong routes
 app.use(function(req, res, next){
   res.status(404);
@@ -56,4 +89,5 @@ app.use(function(err, req, res, next) {
 app.listen(process.env.PORT, function () {
   console.log('Node.js listening ...');
 });
+
 
