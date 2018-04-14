@@ -1,1 +1,1 @@
-# fertile-camel
+# Backend Challenges boilerplate - package.json
